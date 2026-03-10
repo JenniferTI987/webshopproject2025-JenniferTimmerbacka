@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ShopMidnight</title>
+    </head>
+    <body>
+        <h1>Welcome to ShopMidnight!</h1>
+        <button onclick="populateDB()">Browse Products</button>
+        
+        <p>"It's only a click away."</p>
+
+        <script>
+            function populateDB() {
+                fetch('/api/populate/')
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        document.getElementById('product-list').innerText = data.message;
+                    });
+            }
+        </script>
+    </body>
+
+</html>

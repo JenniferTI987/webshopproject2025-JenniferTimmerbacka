@@ -1,25 +1,34 @@
-WebShop web application
+# WebShop web application
 
-NAME
+## NAME
 Jennifer Timmerbacka (Student at Åbo Akademi)
 
-EMAILS:
+## EMAILS:
 jennifer.timmerbacka@abo.fi
 
-IMPLEMENTED REQUIREMENTS
+## IMPLEMENTED REQUIREMENTS
 
-ENV TEST
+## ENV TEST
 
-Install requirements.txt
+## Install requirements.txt
 
 
-Install NPM Modules
+## Install NPM Modules
 
-Install Build folder in root
+## Install Build folder in root
 
-RUN PROJECT
- - In backend folder
+## RUN PROJECT
+### Backend
+cd backend
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
 
-Landing Page
+### Frontend
+cd frontend
+npm install
+npm start
 
-Grade
+## Landing Page
+
+## Grade
