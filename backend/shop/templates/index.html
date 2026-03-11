@@ -1,24 +1,136 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>ShopMidnight</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .container {
+                background: white;
+                padding: 40px;
+                border-radius: 10px;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                text-align: center;
+                max-width: 600px;
+                width: 90%;
+            }
+            h1 {
+                color: #333;
+                margin-bottom: 20px;
+                font-size: 2.5em;
+            }
+            .tagline {
+                color: #666;
+                font-size: 1.1em;
+                margin-bottom: 30px;
+                font-style: italic;
+            }
+            button {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                border: none;
+                padding: 12px 30px;
+                font-size: 1em;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: transform 0.2s, box-shadow 0.2s;
+                margin: 10px 5px;
+            }
+            button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            }
+            button:active {
+                transform: translateY(0);
+            }
+            #product-list {
+                margin-top: 30px;
+                padding: 20px;
+                background: #f5f5f5;
+                border-radius: 5px;
+                text-align: left;
+                min-height: 50px;
+                color: #333;
+            }
+            .loading {
+                color: #667eea;
+                font-weight: bold;
+            }
+            .error {
+                color: #e74c3c;
+                font-weight: bold;
+            }
+            .success {
+                color: #27ae60;
+                font-weight: bold;
+            }
+        </style>
     </head>
     <body>
-        <h1>Welcome to ShopMidnight!</h1>
-        <button onclick="populateDB()">Browse Products</button>
-        
-        <p>"It's only a click away."</p>
+        <div class="container">
+            <h1>Welcome to ShopMidnight!</h1>
+            <p class="tagline">"It's only a click away."</p>
+            
+            <div>
+                <button onclick="populateDB()">📦 Populate Database</button>
+                <button onclick="loadProducts()">🛍️ Browse Products</button>
+            </div>
+            
+            <div id="product-list"></div>
+        </div>
 
         <script>
             function populateDB() {
+                const productList = document.getElementById('product-list');
+                productList.innerHTML = '<p class="loading">Populating database...</p>';
+                
                 fetch('/api/populate/')
                     .then(response => response.json())
                     .then(data => {
-                        alert(data.message);
-                        document.getElementById('product-list').innerText = data.message;
+                        productList.innerHTML = '<p class="success">✓ ' + data.message + '</p>';
+                    })
+                    .catch(error => {
+                        productList.innerHTML = '<p class="error">✗ Error: ' + error.message + '</p>';
+                    });
+            }
+
+            function loadProducts() {
+                const productList = document.getElementById('product-list');
+                productList.innerHTML = '<p class="loading">Loading products...</p>';
+                
+                fetch('/api/items/')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.length === 0) {
+                            productList.innerHTML = '<p>No products available. Populate the database first!</p>';
+                        } else {
+                            let html = '<h3>Available Products</h3>';
+                            data.forEach(item => {
+                                html += `<div style="padding: 10px; border-bottom: 1px solid #ddd;">
+                                    <strong>${item.title}</strong> - $${item.price}
+                                    <p>${item.description}</p>
+                                </div>`;
+                            });
+                            productList.innerHTML = html;
+                        }
+                    })
+                    .catch(error => {
+                        productList.innerHTML = '<p class="error">✗ Error loading products: ' + error.message + '</p>';
                     });
             }
         </script>
     </body>
-
 </html>

@@ -11,3 +11,4 @@ urlpatterns = [
     path('', landing_page),
     path('api/', include('shop.urls')),
 ]
+

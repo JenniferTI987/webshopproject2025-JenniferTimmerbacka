@@ -1,13 +1,13 @@
 from django.db import models
-from djantgo.contrib.auth.models import user
+from django.contrib.auth.models import User
 
-class Item(models,Model):
+class Item(models.Model):
     STATUS_CHOICE = [
         ('ONSALE', 'On sake'),
         ('SOLD', "sold"),
     ]
 
-    title = modles.CharField(max_length=200)
+    title = models.CharField(max_length=200)
     description = models.TextField()
     price = models.FloatField()
     date_added = models.DateTimeField(auto_now_add=True)
